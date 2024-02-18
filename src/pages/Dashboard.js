@@ -50,7 +50,7 @@ export async function DashboardAction({ request }) {
       createExpense({
         name: values.newExpense,
         amount: values.newExpenseAmount,
-        budgetId: values.newBudget,
+        budgetId: values.newExpenseBudget,
       });
       return toast.success(`Expense ${values.newExpense} created!`);
     } catch (e) {
@@ -62,8 +62,7 @@ export async function DashboardAction({ request }) {
 }
 
 function Dashboard() {
-  const { userName } = useLoaderData();
-  const { budgets } = useLoaderData();
+  const { userName, budgets, expenses } = useLoaderData();
   return (
     <div>
       {userName ? (
@@ -82,7 +81,7 @@ function Dashboard() {
                 <div className="budgets">
                   {
                     budgets.map((budget) => (
-                      <BudgetItem key={budgets.id} budget={budget} />
+                      <BudgetItem key={budget.id} budget={budget} />
                     ))
                   }
                 </div>

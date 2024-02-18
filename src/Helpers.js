@@ -12,7 +12,7 @@ export const waait = () =>
   new Promise((res) => setTimeout(res, Math.random() * 2000000));
 //generate random color
 const generateRandomColor = () => {
-  const existingBudgetLength = FetchData("budgets")?.Length ?? 0;
+  const existingBudgetLength = FetchData("budgets")?.length ?? 0;
   return `${existingBudgetLength * 34} 65% 50%`;
 };
 //Create Budget
@@ -55,14 +55,20 @@ export const calculateSpentByBudget = (budgetId) => {
   const expenses = FetchData("expenses") ?? [];
   const budgetSpent = expenses.reduce((acc, expense) => {
     //check if the expense.id === budgetId I passed in
-    if (expense.budgetId !== budgetId) return acc;
+    if (expense.budgetId !== budgetId) return acc
     //add the current amount to my total
-    return acc += expense.amount;
+    return acc += expense.amount
   }, 0)
   return budgetSpent;
 }
 //Formatting
-
+//format percentages
+export const formatPercentage = (amt) => {
+  return amt.toLocaleString(undefined, {
+    style: "percent",
+    minimumFractionDigits: 0,
+  })
+}
 //Format Currency
 export const formatCurrency = (amt) => {
   return amt.toLocaleString(undefined, {
