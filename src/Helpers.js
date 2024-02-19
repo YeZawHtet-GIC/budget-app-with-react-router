@@ -46,33 +46,48 @@ export const createExpense = ({ name, amount, budgetId }) => {
   );
 };
 
-//Delete Item
-export const deleteItem = (key) => {
-  return localStorage.removeItem(key);
-};
 //total spent by budget
 export const calculateSpentByBudget = (budgetId) => {
   const expenses = FetchData("expenses") ?? [];
   const budgetSpent = expenses.reduce((acc, expense) => {
     //check if the expense.id === budgetId I passed in
-    if (expense.budgetId !== budgetId) return acc
+    if (expense.budgetId !== budgetId) return acc;
     //add the current amount to my total
-    return acc += expense.amount
-  }, 0)
+    return (acc += expense.amount);
+  }, 0);
   return budgetSpent;
-}
+};
+//get all items from local storage
+export const getAllMatchingItems = ({ category, key, value }) => {
+  const data = FetchData(category) ?? [];
+  return data.filter((item) => item[key] === value);
+};
+
+//Delete Item from local storage
+export const deleteItem = ({ key, id }) => {
+  const existingData = FetchData(key);
+  if (id) {
+    const newData = existingData.filter((item) => item.id !== id);
+    return localStorage.setItem(key, JSON.stringify(newData));
+  }
+  return localStorage.removeItem(key);
+};
+
 //Formatting
+//Format Date
+export const formatDate = (givenDate) =>
+  new Date(givenDate).toLocaleDateString();
 //format percentages
 export const formatPercentage = (amt) => {
   return amt.toLocaleString(undefined, {
     style: "percent",
     minimumFractionDigits: 0,
-  })
-}
+  });
+};
 //Format Currency
 export const formatCurrency = (amt) => {
   return amt.toLocaleString(undefined, {
     style: "currency",
     currency: "USD",
-  })
-}
+  });
+};
