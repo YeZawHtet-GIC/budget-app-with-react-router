@@ -1,10 +1,11 @@
 import React from "react";
 import { toast } from "react-toastify";
 import { deleteItem, getAllMatchingItems } from "../Helpers";
+import { redirect } from "react-router-dom";
 
 export default function deleteBudget({ params }) {
   try {
-    deleteBudget({
+    deleteItem({
       key: "budgets",
       id: params.id,
     });
@@ -23,4 +24,5 @@ export default function deleteBudget({ params }) {
   } catch (e) {
     throw new Error("There was a problem deleting your budget");
   }
+  return redirect("/");
 }
