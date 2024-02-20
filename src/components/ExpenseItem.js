@@ -15,7 +15,7 @@ export default function ExpenseItem({ expense, showBudget }) {
       <td>{expense.name}</td>
       <td>{formatCurrency(expense.amount)}</td>
       <td>{formatDate(expense.createdAt)}</td>
-      {showBudget && (
+      {budget && showBudget && (
         <td>
           <Link
             style={{ "--accent": budget.color }}
