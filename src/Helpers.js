@@ -32,6 +32,15 @@ export const createBudget = ({ name, amount }) => {
 };
 //Create Expense
 export const createExpense = ({ name, amount, budgetId }) => {
+  const existingBudgets = FetchData("budgets") ?? [];
+  
+  // Find the budget corresponding to the provided budgetId
+  const budget = existingBudgets.find(budget => budget.id === budgetId);
+  
+  // If budget not found or expense amount exceeds budget amount, return early
+  if (!budget || (budget.amount - calculateSpentByBudget(budgetId)) < amount) {
+    return false; // Validation failed
+  }
   const newItem = {
     id: crypto.randomUUID(),
     name: name,
@@ -40,10 +49,11 @@ export const createExpense = ({ name, amount, budgetId }) => {
     budgetId: budgetId,
   };
   const existingExpense = FetchData("expenses") ?? [];
-  return localStorage.setItem(
+   localStorage.setItem(
     "expenses",
     JSON.stringify([...existingExpense, newItem])
   );
+  return true;
 };
 
 //total spent by budget

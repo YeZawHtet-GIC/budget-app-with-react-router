@@ -50,12 +50,15 @@ export async function DashboardAction({ request }) {
   }
   if (_action === "createExpense") {
     try {
-      createExpense({
+      
+      const expendCreated=createExpense({
         name: values.newExpense,
         amount: values.newExpenseAmount,
         budgetId: values.newExpenseBudget,
       });
-      return toast.success(`Expense ${values.newExpense} created!`);
+      if(expendCreated) return toast.success(`Expense ${values.newExpense} created!`);
+      return toast.error(`Expense ${values.newExpense} Failed, Cause Budget is not enough!`);
+      
     } catch (e) {
       throw new Error(
         "There was a problem Adding new Expense. Please try again!"
