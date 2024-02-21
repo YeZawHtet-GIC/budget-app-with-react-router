@@ -37,11 +37,12 @@ export async function DashboardAction({ request }) {
   }
   if (_action === "createBudget") {
     try {
-      createBudget({
+      const budgetCreated=createBudget({
         name: values.newBudget,
         amount: values.newBudgetAmount,
       });
-      return toast.success(`Budget Created successfully`);
+      if(budgetCreated) return toast.success(`Budget Created successfully`);
+      return toast.error(`Budget Name already exists`);
     } catch (e) {
       throw new Error(
         "There was a problem creating your New Budget. Please try again"

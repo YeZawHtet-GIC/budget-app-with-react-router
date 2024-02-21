@@ -17,6 +17,13 @@ const generateRandomColor = () => {
 };
 //Create Budget
 export const createBudget = ({ name, amount }) => {
+  const existingBudgets = FetchData("budgets") ?? [];
+  // Check if the name already exists in existing budgets
+  const isDuplicateName = existingBudgets.some(budget => budget.name === name);
+  if (isDuplicateName) {
+    return false; // Return false if name is a duplicate
+  }
+
   const newItem = {
     id: crypto.randomUUID(),
     name: name,
@@ -25,10 +32,11 @@ export const createBudget = ({ name, amount }) => {
     color: generateRandomColor(),
   };
   const existingBudget = FetchData("budgets") ?? [];
-  return localStorage.setItem(
+   localStorage.setItem(
     "budgets",
     JSON.stringify([...existingBudget, newItem])
   );
+  return true;
 };
 //Create Expense
 export const createExpense = ({ name, amount, budgetId }) => {
